@@ -94,7 +94,21 @@ name = "anchor-attribute-access-control"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "regex",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-access-control"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cf7d535e1381be3de2c0716c0a1c1e32ad9df1042cddcf7bc18d743569e53319"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
@@ -107,7 +121,22 @@ name = "anchor-attribute-account"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "bs58 0.4.0",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "rustversion",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-account"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c3bcd731f21048a032be27c7791701120e44f3f6371358fc4261a7f716283d29"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "bs58 0.4.0",
  "proc-macro2 1.0.47",
@@ -121,7 +150,18 @@ name = "anchor-attribute-constant"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "proc-macro2 1.0.47",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-constant"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e1be64a48e395fe00b8217287f226078be2cf32dae42fdf8a885b997945c3d28"
+dependencies = [
+ "anchor-syn 0.26.0",
  "proc-macro2 1.0.47",
  "syn 1.0.105",
 ]
@@ -131,7 +171,19 @@ name = "anchor-attribute-error"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-error"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "38ea6713d1938c0da03656ff8a693b17dc0396da66d1ba320557f07e86eca0d4"
+dependencies = [
+ "anchor-syn 0.26.0",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
  "syn 1.0.105",
@@ -142,7 +194,20 @@ name = "anchor-attribute-event"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-event"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d401f11efb3644285685f8339829a9786d43ed7490bb1699f33c478d04d5a582"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
@@ -154,7 +219,21 @@ name = "anchor-attribute-interface"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "heck",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-interface"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6700a6f5c888a9c33fe8afc0c64fd8575fa28d05446037306d0f96102ae4480"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "heck",
  "proc-macro2 1.0.47",
@@ -167,7 +246,20 @@ name = "anchor-attribute-program"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-program"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6ad769993b5266714e8939e47fbdede90e5c030333c7522d99a4d4748cf26712"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
@@ -179,7 +271,20 @@ name = "anchor-attribute-state"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-attribute-state"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4e677fae4a016a554acdd0e3b7f178d3acafaa7e7ffac6b8690cf4e171f1c116"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
@@ -191,7 +296,20 @@ name = "anchor-derive-accounts"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-syn",
+ "anchor-syn 0.25.0",
+ "anyhow",
+ "proc-macro2 1.0.47",
+ "quote 1.0.21",
+ "syn 1.0.105",
+]
+
+[[package]]
+name = "anchor-derive-accounts"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "340beef6809d1c3fcc7ae219153d981e95a8a277ff31985bd7050e32645dc9a8"
+dependencies = [
+ "anchor-syn 0.26.0",
  "anyhow",
  "proc-macro2 1.0.47",
  "quote 1.0.21",
@@ -203,15 +321,39 @@ name = "anchor-lang"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-attribute-access-control",
- "anchor-attribute-account",
- "anchor-attribute-constant",
- "anchor-attribute-error",
- "anchor-attribute-event",
- "anchor-attribute-interface",
- "anchor-attribute-program",
- "anchor-attribute-state",
- "anchor-derive-accounts",
+ "anchor-attribute-access-control 0.25.0",
+ "anchor-attribute-account 0.25.0",
+ "anchor-attribute-constant 0.25.0",
+ "anchor-attribute-error 0.25.0",
+ "anchor-attribute-event 0.25.0",
+ "anchor-attribute-interface 0.25.0",
+ "anchor-attribute-program 0.25.0",
+ "anchor-attribute-state 0.25.0",
+ "anchor-derive-accounts 0.25.0",
+ "arrayref",
+ "base64 0.13.1",
+ "bincode",
+ "borsh",
+ "bytemuck",
+ "solana-program",
+ "thiserror",
+]
+
+[[package]]
+name = "anchor-lang"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "662ceafe667448ee4199a4be2ee83b6bb76da28566eee5cea05f96ab38255af8"
+dependencies = [
+ "anchor-attribute-access-control 0.26.0",
+ "anchor-attribute-account 0.26.0",
+ "anchor-attribute-constant 0.26.0",
+ "anchor-attribute-error 0.26.0",
+ "anchor-attribute-event 0.26.0",
+ "anchor-attribute-interface 0.26.0",
+ "anchor-attribute-program 0.26.0",
+ "anchor-attribute-state 0.26.0",
+ "anchor-derive-accounts 0.26.0",
  "arrayref",
  "base64 0.13.1",
  "bincode",
@@ -226,7 +368,7 @@ name = "anchor-spl"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "solana-program",
  "spl-associated-token-account",
  "spl-token",
@@ -236,6 +378,25 @@ dependencies = [
 name = "anchor-syn"
 version = "0.25.0"
 source = "git+https://github.com/clockwork-xyz/anchor?branch=0.25.0-solana.1.13.4#ef43c442f1c0f04ee492e161a4917b3d56872fbe"
+dependencies = [
+ "anyhow",
+ "bs58 0.3.1",
+ "heck",
+ "proc-macro2 1.0.47",
+ "proc-macro2-diagnostics",
+ "quote 1.0.21",
+ "serde",
+ "serde_json",
+ "sha2 0.9.9",
+ "syn 1.0.105",
+ "thiserror",
+]
+
+[[package]]
+name = "anchor-syn"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0418bcb5daac3b8cb1b60d8fdb1d468ca36f5509f31fb51179326fae1028fdcc"
 dependencies = [
  "anyhow",
  "bs58 0.3.1",
@@ -399,17 +560,6 @@ name = "base64ct"
 version = "1.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b645a089122eccb6111b4f81cbc1a49f5900ac4666bb93ac027feaecf15607bf"
-
-[[package]]
-name = "bigdecimal"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6aaf33151a6429fe9211d1b276eafdf70cdff28b071e76c0b0e1503221ea3744"
-dependencies = [
- "num-bigint 0.4.3",
- "num-integer",
- "num-traits",
-]
 
 [[package]]
 name = "bincode"
@@ -704,9 +854,10 @@ dependencies = [
 name = "client-client"
 version = "0.1.0"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.26.0",
  "clockwork-sdk",
  "pisolana",
+ "rand 0.8.5",
  "solana-sdk",
 ]
 
@@ -715,7 +866,7 @@ name = "clockwork-client"
 version = "1.3.9"
 source = "git+https://github.com/clockwork-xyz/clockwork?tag=v1.3.9#092f86072ad0fa087c990ec9f01e26a227913046"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "anchor-spl",
  "bincode",
  "borsh",
@@ -744,7 +895,7 @@ name = "clockwork-network-program"
 version = "1.3.9"
 source = "git+https://github.com/clockwork-xyz/clockwork?tag=v1.3.9#092f86072ad0fa087c990ec9f01e26a227913046"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "anchor-spl",
  "clockwork-utils",
 ]
@@ -766,7 +917,7 @@ name = "clockwork-thread-program"
 version = "1.3.9"
 source = "git+https://github.com/clockwork-xyz/clockwork?tag=v1.3.9#092f86072ad0fa087c990ec9f01e26a227913046"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "chrono",
  "clockwork-cron",
  "clockwork-network-program",
@@ -780,7 +931,7 @@ name = "clockwork-utils"
 version = "1.3.9"
 source = "git+https://github.com/clockwork-xyz/clockwork?tag=v1.3.9#092f86072ad0fa087c990ec9f01e26a227913046"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "base64 0.13.1",
  "static-pubkey",
 ]
@@ -790,7 +941,7 @@ name = "clockwork-webhook-program"
 version = "1.3.9"
 source = "git+https://github.com/clockwork-xyz/clockwork?tag=v1.3.9#092f86072ad0fa087c990ec9f01e26a227913046"
 dependencies = [
- "anchor-lang",
+ "anchor-lang 0.25.0",
  "clockwork-network-program",
 ]
 
@@ -2214,8 +2365,7 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 name = "pisolana"
 version = "0.1.0"
 dependencies = [
- "anchor-lang",
- "bigdecimal",
+ "anchor-lang 0.26.0",
 ]
 
 [[package]]

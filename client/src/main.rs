@@ -1,21 +1,35 @@
 use {
     anchor_lang::{prelude::*, InstructionData},
     clockwork_sdk::client::{Client, ClientResult},
+    rand::Rng,
     solana_sdk::{instruction::Instruction, native_token::LAMPORTS_PER_SOL, signature::Keypair},
 };
 
 pub mod utils;
+use anchor_lang::system_program;
 pub use utils::*;
 
 fn main() -> ClientResult<()> {
     let payer = Keypair::new();
-    let client = Client::new(payer, "https://api.devnet.solana.com".into());
+    let client = Client::new(payer, "http://localhost:8899".into());
     client.airdrop(&client.payer_pubkey(), 1 * LAMPORTS_PER_SOL)?;
+
+    let mut rng = rand::thread_rng();
+    let id: u64 = rng.gen();
+    let pi = pisolana::Pi::pda(id);
 
     let initiallize_ix = Instruction {
         program_id: pisolana::ID,
-        accounts: vec![AccountMeta::new(client.payer_pubkey(), true)],
-        data: pisolana::instruction::Initialize {}.data(),
+        accounts: vec![
+            AccountMeta::new(client.payer_pubkey(), true),
+            AccountMeta::new(pi.0, false),
+            AccountMeta::new_readonly(system_program::ID, false),
+        ],
+        data: pisolana::instruction::Initialize {
+            pi_id: id,
+            bump: pi.1,
+        }
+        .data(),
     };
 
     send_and_confirm_tx(
@@ -24,6 +38,24 @@ fn main() -> ClientResult<()> {
         None,
         "initialize".to_string(),
     )?;
+
+    for _ in 1..100 {
+        let calculate_pi_ix = Instruction {
+            program_id: pisolana::ID,
+            accounts: vec![
+                AccountMeta::new(client.payer_pubkey(), true),
+                AccountMeta::new(pi.0, false),
+            ],
+            data: pisolana::instruction::CalculatePi {}.data(),
+        };
+
+        send_and_confirm_tx(
+            &client,
+            [calculate_pi_ix].to_vec(),
+            None,
+            "calculate".to_string(),
+        )?;
+    }
 
     Ok(())
 }

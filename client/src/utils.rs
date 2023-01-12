@@ -31,7 +31,7 @@ pub fn send_and_confirm_tx(
     // Send and confirm initialize tx
     match client.send_and_confirm_transaction(&tx) {
         Ok(sig) => println!(
-            "{} tx: ✅ https://explorer.solana.com/tx/{}?cluster=devnet",
+            "{} tx: ✅ https://explorer.solana.com/tx/{}?cluster=custom",
             label, sig
         ),
         Err(err) => println!("{} tx: ❌ {:#?}", label, err),
@@ -41,7 +41,7 @@ pub fn send_and_confirm_tx(
 
 pub fn print_explorer_link(address: Pubkey, label: String) -> ClientResult<()> {
     println!(
-        "{}: https://explorer.solana.com/address/{}?cluster=devnet",
+        "{}: https://explorer.solana.com/address/{}?cluster=custom",
         label.to_string(),
         address
     );
