@@ -6,7 +6,7 @@ pub mod states;
 pub use contexts::*;
 pub use states::*;
 
-declare_id!("bd4L4NvhVyUSorWipNzE66MM4XAKBqA4V3JjD7L3Rv5");
+declare_id!("HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP");
 
 #[program]
 pub mod pisolana {
@@ -17,6 +17,10 @@ pub mod pisolana {
     }
 
     pub fn calculate_pi(ctx: Context<CalculatePi>) -> Result<()> {
+        ctx.accounts.process()
+    }
+
+    pub fn view_pi(ctx: Context<ViewPi>) -> Result<()> {
         ctx.accounts.process()
     }
 }

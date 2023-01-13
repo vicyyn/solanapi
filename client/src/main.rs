@@ -3,6 +3,8 @@ use {
     clockwork_sdk::client::{Client, ClientResult},
     rand::Rng,
     solana_sdk::{instruction::Instruction, native_token::LAMPORTS_PER_SOL, signature::Keypair},
+    std::thread,
+    std::time::Duration,
 };
 
 pub mod utils;
@@ -39,22 +41,44 @@ fn main() -> ClientResult<()> {
         "initialize".to_string(),
     )?;
 
-    for _ in 1..100 {
-        let calculate_pi_ix = Instruction {
-            program_id: pisolana::ID,
-            accounts: vec![
-                AccountMeta::new(client.payer_pubkey(), true),
-                AccountMeta::new(pi.0, false),
-            ],
-            data: pisolana::instruction::CalculatePi {}.data(),
-        };
+    for _ in 1..10 {
+        thread::spawn(|| {
+            let client = Client::new(payer.clone(), "http://localhost:8899".into());
+            for i in 1..1000 {
+                if i % 10 == 0 {
+                    let view_pi_ix = Instruction {
+                        program_id: pisolana::ID,
+                        accounts: vec![
+                            AccountMeta::new(client.payer_pubkey(), true),
+                            AccountMeta::new(pi.0, false),
+                        ],
+                        data: pisolana::instruction::ViewPi {}.data(),
+                    };
 
-        send_and_confirm_tx(
-            &client,
-            [calculate_pi_ix].to_vec(),
-            None,
-            "calculate".to_string(),
-        )?;
+                    send_and_confirm_tx(
+                        &client,
+                        [view_pi_ix].to_vec(),
+                        None,
+                        "view_pi".to_string(),
+                    );
+                }
+                let calculate_pi_ix = Instruction {
+                    program_id: pisolana::ID,
+                    accounts: vec![
+                        AccountMeta::new(client.payer_pubkey(), true),
+                        AccountMeta::new(pi.0, false),
+                    ],
+                    data: pisolana::instruction::CalculatePi {}.data(),
+                };
+
+                send_and_confirm_tx(
+                    &client,
+                    [calculate_pi_ix].to_vec(),
+                    None,
+                    "calculate_pi".to_string(),
+                );
+            }
+        });
     }
 
     Ok(())

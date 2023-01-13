@@ -5,7 +5,7 @@ use crate::*;
 pub struct Initialize<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(init,payer=payer, space = 8 + size_of::<Pi>(), seeds=[SEED_PI,&id.to_be_bytes()], bump)]
+    #[account(init,payer=payer, space = 8 + size_of::<Pi>() + 500, seeds=[SEED_PI,&id.to_be_bytes()], bump)]
     pub pi: Account<'info, Pi>,
     pub system_program: Program<'info, System>,
 }

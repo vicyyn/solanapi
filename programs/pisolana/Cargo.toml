@@ -17,3 +17,4 @@ default = []
 
 [dependencies]
 anchor-lang = "0.26.0"
+bigdecimal = "0.3.0"

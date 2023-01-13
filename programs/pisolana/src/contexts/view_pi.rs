@@ -1,17 +1,17 @@
 use crate::*;
 
 #[derive(Accounts)]
-pub struct CalculatePi<'info> {
+pub struct ViewPi<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(mut,address=Pi::pda(pi.id).0)]
+    #[account(seeds=[SEED_PI,&pi.id.to_be_bytes()], bump)]
     pub pi: Account<'info, Pi>,
 }
 
-impl<'info> CalculatePi<'_> {
+impl<'info> ViewPi<'_> {
     pub fn process(&mut self) -> Result<()> {
         let Self { pi, .. } = self;
-        pi.calculate_pi(1);
+        msg!("{}", pi.res);
         Ok(())
     }
 }

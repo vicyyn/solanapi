@@ -3,7 +3,7 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-pisolana = "bd4L4NvhVyUSorWipNzE66MM4XAKBqA4V3JjD7L3Rv5"
+pisolana = "HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP"
 
 [registry]
 url = "https://api.apr.dev"
