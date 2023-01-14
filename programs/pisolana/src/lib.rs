@@ -16,8 +16,8 @@ pub mod pisolana {
         ctx.accounts.process(pi_id, bump)
     }
 
-    pub fn calculate_pi(ctx: Context<CalculatePi>) -> Result<()> {
-        ctx.accounts.process()
+    pub fn calculate_pi(ctx: Context<CalculatePi>, digit: u64) -> Result<()> {
+        ctx.accounts.process(digit)
     }
 
     pub fn view_pi(ctx: Context<ViewPi>) -> Result<()> {

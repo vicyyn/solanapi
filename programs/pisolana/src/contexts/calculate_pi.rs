@@ -9,9 +9,9 @@ pub struct CalculatePi<'info> {
 }
 
 impl<'info> CalculatePi<'_> {
-    pub fn process(&mut self) -> Result<()> {
+    pub fn process(&mut self, digit: u64) -> Result<()> {
         let Self { pi, .. } = self;
-        pi.calculate_pi(1);
+        pi.pi(digit);
         Ok(())
     }
 }
