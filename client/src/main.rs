@@ -39,16 +39,29 @@ fn main() -> ClientResult<()> {
         "initialize".to_string(),
     )?;
 
-    for i in 0..100 {
+    for i in 0..10000 {
+        // if i % 5 == 0 {
+        //     let view_pi_ix = Instruction {
+        //         program_id: pisolana::ID,
+        //         accounts: vec![
+        //             AccountMeta::new(client.payer_pubkey(), true),
+        //             AccountMeta::new(pi.0, false),
+        //         ],
+        //         data: pisolana::instruction::ViewPi {}.data(),
+        //     };
+
+        //     send_and_confirm_tx(&client, [view_pi_ix].to_vec(), None, "view_pi".to_string())?;
+        // }
         let calculate_pi_ix = Instruction {
             program_id: pisolana::ID,
             accounts: vec![
                 AccountMeta::new(client.payer_pubkey(), true),
                 AccountMeta::new(pi.0, false),
             ],
-            data: pisolana::instruction::CalculatePi { digit: i }.data(),
+            data: pisolana::instruction::CalculatePi {}.data(),
         };
 
+        print!("{} ", i);
         send_and_confirm_tx(
             &client,
             [calculate_pi_ix].to_vec(),
