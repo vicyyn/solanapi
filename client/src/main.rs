@@ -1,6 +1,6 @@
 use {
     anchor_lang::{prelude::*, InstructionData},
-    clockwork_sdk::client::{Client, ClientResult},
+    clockwork_client::{Client, ClientResult},
     rand::Rng,
     solana_sdk::{instruction::Instruction, native_token::LAMPORTS_PER_SOL, signature::Keypair},
 };
