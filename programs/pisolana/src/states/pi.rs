@@ -16,9 +16,9 @@ pub enum Step {
 #[account]
 pub struct Pi {
     pub id: u64,
-    pub res: Vec<u8>,
     pub step: Step,
     pub current_pi_iteration: u64,
+    pub current_digits_block: u64,
     pub r: u64,
     pub k: u64,
     pub s: f64,
@@ -40,7 +40,7 @@ impl Pi {
         while k <= self.current_pi_iteration {
             r = 8 * k + j;
             s = (s + self.pow_mod(16, self.current_pi_iteration - k, r) as f64 / r as f64) % 1.0;
-            if k % 70 == 0 {
+            if k % 70 == 0 && k != 0 {
                 self.k = k + 1;
                 self.r = r;
                 self.s = s;
@@ -75,7 +75,7 @@ impl Pi {
 
     // calcualte pi using BBP Formula.
     // https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-    pub fn pi(&mut self) {
+    pub fn pi(&mut self, digits: &mut Account<DigitsBlock>) {
         match self.step {
             Step::X1Left => {
                 msg!("X1LEFT");
@@ -139,14 +139,17 @@ impl Pi {
                 let res_bytes: &[u8] = &((x * 16_f64.powi(14)) as u128).to_be_bytes();
                 for i in 0..res_bytes.len() {
                     if res_bytes[i] != 0 {
-                        self.res.extend_from_slice(&res_bytes[i..(i + 2)]);
+                        digits.res.extend_from_slice(&res_bytes[i..(i + 2)]);
                         break;
                     }
                 }
                 self.current_pi_iteration += 4;
+                if digits.res.len() == MAX_PER_BLOCK {
+                    self.current_digits_block += 1;
+                }
                 self.step = Step::X1Left;
                 self.reset();
-                msg!("{:02X?}", self.res);
+                msg!("{:02X?}", digits.res);
             }
         }
     }
@@ -201,12 +204,12 @@ pub trait PiAccount {
 impl PiAccount for Account<'_, Pi> {
     fn new(&mut self, id: u64, bump: u8) -> Result<()> {
         self.id = id;
-        self.res = vec![];
         self.s = 0.0;
         self.k = 0;
         self.r = 0;
         self.x = 0.0;
-        self.current_pi_iteration = 50000;
+        self.current_pi_iteration = 0;
+        self.current_digits_block = 0;
         self.bump = bump;
         Ok(())
     }
