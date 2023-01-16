@@ -139,17 +139,16 @@ impl Pi {
                 let res_bytes: &[u8] = &((x * 16_f64.powi(14)) as u128).to_be_bytes();
                 for i in 0..res_bytes.len() {
                     if res_bytes[i] != 0 {
-                        digits.res.extend_from_slice(&res_bytes[i..(i + 2)]);
+                        digits.res.extend_from_slice(&res_bytes[i..(i + 4)]);
                         break;
                     }
                 }
-                self.current_pi_iteration += 4;
+                self.current_pi_iteration += 8;
                 if digits.res.len() == MAX_PER_BLOCK {
                     self.current_digits_block += 1;
                 }
                 self.step = Step::X1Left;
                 self.reset();
-                msg!("{:02X?}", digits.res);
             }
         }
     }
