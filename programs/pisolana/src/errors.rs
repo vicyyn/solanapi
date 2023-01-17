@@ -2,6 +2,8 @@ use crate::*;
 
 #[error_code]
 pub enum CustomError {
-    #[msg("Invalid Digits Block Provided")]
-    InvalidDigitsBlockProvided,
+    #[msg("Invalid Hex Block Provided")]
+    InvalidHexBlockProvided,
+    #[msg("Number of Hex provided has to be between 1 and 4")]
+    InvalidNumberOfHexProvided,
 }

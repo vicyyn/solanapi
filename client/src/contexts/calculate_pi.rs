@@ -1,6 +1,11 @@
 use crate::*;
 
-pub fn calculate_pi(client: &Client, pi: Pubkey, digits_block: Pubkey) -> ClientResult<()> {
+pub fn calculate_pi(
+    client: &Client,
+    pi: Pubkey,
+    digits_block: Pubkey,
+    digits_to_add: u8,
+) -> ClientResult<()> {
     let calculate_pi_ix = Instruction {
         program_id: pisolana::ID,
         accounts: vec![
@@ -8,7 +13,7 @@ pub fn calculate_pi(client: &Client, pi: Pubkey, digits_block: Pubkey) -> Client
             AccountMeta::new(pi, false),
             AccountMeta::new(digits_block, false),
         ],
-        data: pisolana::instruction::CalculatePi {}.data(),
+        data: pisolana::instruction::CalculatePi { digits_to_add }.data(),
     };
 
     send_and_confirm_tx(

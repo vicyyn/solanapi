@@ -18,12 +18,12 @@ pub mod pisolana {
         ctx.accounts.process(pi_id, bump)
     }
 
-    pub fn initialize_digits_block(ctx: Context<InitializeDigitsBlock>, bump: u8) -> Result<()> {
+    pub fn initialize_hex_block(ctx: Context<InitializeHexBlock>, bump: u8) -> Result<()> {
         ctx.accounts.process(bump)
     }
 
-    pub fn calculate_pi(ctx: Context<CalculatePi>) -> Result<()> {
-        ctx.accounts.process()
+    pub fn calculate_pi(ctx: Context<CalculatePi>, digits_to_add: u8) -> Result<()> {
+        ctx.accounts.process(digits_to_add)
     }
 
     pub fn view_pi(ctx: Context<ViewPi>) -> Result<()> {

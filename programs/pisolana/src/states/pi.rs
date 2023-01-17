@@ -18,7 +18,7 @@ pub struct Pi {
     pub id: u64,
     pub step: Step,
     pub current_pi_iteration: u64,
-    pub current_digits_block: u64,
+    pub current_hex_block: u64,
     pub r: u64,
     pub k: u64,
     pub s: f64,
@@ -75,7 +75,7 @@ impl Pi {
 
     // calcualte pi using BBP Formula.
     // https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-    pub fn pi(&mut self, digits: &mut Account<DigitsBlock>) {
+    pub fn pi(&mut self, hex_block: &mut Account<HexBlock>, digits_to_add: u8) {
         match self.step {
             Step::X1Left => {
                 msg!("X1LEFT");
@@ -139,13 +139,15 @@ impl Pi {
                 let res_bytes: &[u8] = &((x * 16_f64.powi(14)) as u128).to_be_bytes();
                 for i in 0..res_bytes.len() {
                     if res_bytes[i] != 0 {
-                        digits.res.extend_from_slice(&res_bytes[i..(i + 4)]);
+                        hex_block
+                            .hex
+                            .extend_from_slice(&res_bytes[i..(i + digits_to_add as usize)]);
                         break;
                     }
                 }
                 self.current_pi_iteration += 8;
-                if digits.res.len() == MAX_PER_BLOCK {
-                    self.current_digits_block += 1;
+                if hex_block.hex.len() == MAX_PER_BLOCK {
+                    self.current_hex_block += 1;
                 }
                 self.step = Step::X1Left;
                 self.reset();
@@ -208,7 +210,7 @@ impl PiAccount for Account<'_, Pi> {
         self.r = 0;
         self.x = 0.0;
         self.current_pi_iteration = 0;
-        self.current_digits_block = 0;
+        self.current_hex_block = 0;
         self.bump = bump;
         Ok(())
     }

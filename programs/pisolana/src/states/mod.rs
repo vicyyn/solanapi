@@ -1,5 +1,5 @@
-pub mod digits;
+pub mod hex_block;
 pub mod pi;
 
-pub use digits::*;
+pub use hex_block::*;
 pub use pi::*;
