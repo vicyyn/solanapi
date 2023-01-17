@@ -58,7 +58,7 @@ fn main() -> ClientResult<()> {
                 (pi_hex - pi_account.current_pi_iteration) as u8,
             )?;
         } else {
-            calculate_pi(&client, pi.0, hex_block.0, 8)?;
+            calculate_pi(&client, pi.0, hex_block.0, 10)?;
         }
     }
 

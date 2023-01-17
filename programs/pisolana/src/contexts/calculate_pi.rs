@@ -18,7 +18,7 @@ impl<'info> CalculatePi<'_> {
             CustomError::InvalidHexBlockProvided
         );
         require!(
-            (1..9).contains(&number_of_hex),
+            (1..11).contains(&number_of_hex),
             CustomError::InvalidNumberOfHexProvided
         );
         pi.pi(hex_block, number_of_hex);
