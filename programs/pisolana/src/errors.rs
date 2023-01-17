@@ -4,6 +4,6 @@ use crate::*;
 pub enum CustomError {
     #[msg("Invalid Hex Block Provided")]
     InvalidHexBlockProvided,
-    #[msg("Number of Hex provided has to be between 1 and 4")]
+    #[msg("Number of Hex provided has to be between 1 and 8")]
     InvalidNumberOfHexProvided,
 }

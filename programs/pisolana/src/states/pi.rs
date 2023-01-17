@@ -75,7 +75,7 @@ impl Pi {
 
     // calcualte pi using BBP Formula.
     // https://en.wikipedia.org/wiki/Bailey%E2%80%93Borwein%E2%80%93Plouffe_formula
-    pub fn pi(&mut self, hex_block: &mut Account<HexBlock>, digits_to_add: u8) {
+    pub fn pi(&mut self, hex_block: &mut Account<HexBlock>, number_of_hex: u8) {
         match self.step {
             Step::X1Left => {
                 msg!("X1LEFT");
@@ -136,16 +136,16 @@ impl Pi {
             Step::Final => {
                 msg!("FINAL");
                 let x = self.x.rem_euclid(1.0);
-                let res_bytes: &[u8] = &((x * 16_f64.powi(14)) as u128).to_be_bytes();
-                for i in 0..res_bytes.len() {
-                    if res_bytes[i] != 0 {
-                        hex_block
-                            .hex
-                            .extend_from_slice(&res_bytes[i..(i + digits_to_add as usize)]);
-                        break;
-                    }
+                let bytes = self
+                    .remove_leading_zeros(((x * 16_f64.powi(14)) as u128).to_be_bytes().to_vec());
+                let pi_hex = TwoHex::get_hex_from_bytes(&bytes, number_of_hex);
+                if self.current_pi_iteration % 2 == 0 {
+                    hex_block.extend_hex(pi_hex);
+                } else {
+                    hex_block.extend_hex_uneven(pi_hex, number_of_hex % 2 == 0);
                 }
-                self.current_pi_iteration += 8;
+
+                self.current_pi_iteration += number_of_hex as u64;
                 if hex_block.hex.len() == MAX_PER_BLOCK {
                     self.current_hex_block += 1;
                 }
@@ -153,6 +153,15 @@ impl Pi {
                 self.reset();
             }
         }
+    }
+
+    fn remove_leading_zeros(&self, numbers: Vec<u8>) -> Vec<u8> {
+        for i in 0..numbers.len() {
+            if numbers[i] != 0 {
+                return numbers[i..].to_vec();
+            }
+        }
+        return vec![];
     }
 
     pub fn reset(&mut self) {

@@ -4,7 +4,7 @@ pub fn calculate_pi(
     client: &Client,
     pi: Pubkey,
     digits_block: Pubkey,
-    digits_to_add: u8,
+    number_of_hex: u8,
 ) -> ClientResult<()> {
     let calculate_pi_ix = Instruction {
         program_id: pisolana::ID,
@@ -13,7 +13,7 @@ pub fn calculate_pi(
             AccountMeta::new(pi, false),
             AccountMeta::new(digits_block, false),
         ],
-        data: pisolana::instruction::CalculatePi { digits_to_add }.data(),
+        data: pisolana::instruction::CalculatePi { number_of_hex }.data(),
     };
 
     send_and_confirm_tx(

@@ -13,7 +13,7 @@ pub struct ViewPi<'info> {
 impl<'info> ViewPi<'_> {
     pub fn process(&mut self) -> Result<()> {
         let Self { hex_block, .. } = self;
-        msg!("{:02X?}", hex_block.hex);
+        msg!("{:?}", hex_block.hex);
         Ok(())
     }
 }

@@ -11,17 +11,17 @@ pub struct CalculatePi<'info> {
 }
 
 impl<'info> CalculatePi<'_> {
-    pub fn process(&mut self, digits_to_add: u8) -> Result<()> {
+    pub fn process(&mut self, number_of_hex: u8) -> Result<()> {
         let Self { pi, hex_block, .. } = self;
         require!(
             pi.current_hex_block == hex_block.block_id,
             CustomError::InvalidHexBlockProvided
         );
         require!(
-            (1..5).contains(&digits_to_add),
+            (1..9).contains(&number_of_hex),
             CustomError::InvalidNumberOfHexProvided
         );
-        pi.pi(hex_block, digits_to_add);
+        pi.pi(hex_block, number_of_hex);
         Ok(())
     }
 }

@@ -3,7 +3,7 @@ use crate::*;
 #[account]
 pub struct HexBlock {
     pub block_id: u64,
-    pub hex: Vec<u8>,
+    pub hex: Vec<TwoHex>,
     pub bump: u8,
 }
 
@@ -20,6 +20,30 @@ impl HexBlock {
             ],
             &crate::ID,
         )
+    }
+
+    pub fn extend_hex(&mut self, new_hex: Vec<TwoHex>) {
+        self.hex.extend(new_hex)
+    }
+    pub fn extend_hex_uneven(&mut self, new_hex: Vec<TwoHex>, push_last: bool) {
+        let first_hex = self.hex.last().unwrap().get_first_hex();
+        let second_hex = new_hex[0].get_first_hex().to_second_hex();
+        let hex = TwoHex::new(first_hex, second_hex);
+        let length = self.hex.len();
+        self.hex[length - 1] = hex;
+
+        for i in 0..new_hex.len() {
+            let first_hex = new_hex[i].get_second_hex().to_first_hex();
+            if i == new_hex.len() - 1 {
+                if push_last {
+                    self.hex.push(first_hex);
+                }
+                break;
+            }
+            let second_hex = new_hex[i + 1].get_first_hex().to_second_hex();
+            let hex = TwoHex::new(first_hex, second_hex);
+            self.hex.push(hex);
+        }
     }
 }
 
