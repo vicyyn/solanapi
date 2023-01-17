@@ -82,80 +82,97 @@ impl Pi {
                 let sum = self.left_sum(1);
                 if sum.1 {
                     self.x += 4.0 * sum.0;
-                    self.step = Step::X1Right;
+                    self.next_step();
                 }
             }
             Step::X1Right => {
                 msg!("X1RIGHT");
                 let sum = self.right_sum(1);
                 self.x += 4.0 * sum;
-                self.step = Step::X2Left;
+                self.next_step();
             }
             Step::X2Left => {
                 msg!("X2LEFT");
                 let sum = self.left_sum(4);
                 if sum.1 {
                     self.x -= 2.0 * sum.0;
-                    self.step = Step::X2Right;
+                    self.next_step();
                 }
             }
             Step::X2Right => {
                 msg!("X2RIGHT");
                 let sum = self.right_sum(4);
                 self.x -= 2.0 * sum;
-                self.step = Step::X3Left;
+                self.next_step();
             }
             Step::X3Left => {
                 msg!("X3LEFT");
                 let sum = self.left_sum(5);
                 if sum.1 {
                     self.x -= sum.0;
-                    self.step = Step::X3Right;
+                    self.next_step();
                 }
             }
             Step::X3Right => {
                 msg!("X3RIGHT");
                 let sum = self.right_sum(5);
                 self.x -= sum;
-                self.step = Step::X4Left;
+                self.next_step();
             }
             Step::X4Left => {
                 msg!("X4LEFT");
                 let sum = self.left_sum(6);
                 if sum.1 {
                     self.x -= sum.0;
-                    self.step = Step::X4Right;
+                    self.next_step();
                 }
             }
             Step::X4Right => {
                 msg!("X4RIGHT");
                 let sum = self.right_sum(6);
                 self.x -= sum;
-                self.step = Step::Final;
+                self.next_step();
             }
             Step::Final => {
                 msg!("FINAL");
                 let x = self.x.rem_euclid(1.0);
-                let bytes = self
+                let bytes = &self
                     .remove_leading_zeros(((x * 16_f64.powi(14)) as u128).to_be_bytes().to_vec());
-                let pi_hex = TwoHex::get_hex_from_bytes(&bytes, number_of_hex);
-                if self.current_pi_iteration % 2 == 0 {
-                    hex_block.extend_hex(pi_hex);
-                } else {
-                    hex_block.extend_hex_uneven(pi_hex, number_of_hex % 2 == 0);
-                }
 
-                self.current_pi_iteration += number_of_hex as u64;
-                if hex_block.hex.len() == MAX_PER_BLOCK {
-                    self.current_hex_block += 1;
-                }
-                self.step = Step::X1Left;
+                hex_block.extend_hex(bytes, number_of_hex, self.current_pi_iteration);
+                self.increment_current_pi_iteration(number_of_hex);
+                self.update_current_hex_block(hex_block.hex.len());
+                self.next_step();
                 self.reset();
             }
         }
     }
 
-    fn remove_leading_zeros(&self, numbers: Vec<u8>) -> Vec<u8> {
+    fn update_current_hex_block(&mut self, current_hex_block_len: usize) {
+        if current_hex_block_len >= MAX_PER_BLOCK {
+            self.current_hex_block += 1;
+        }
+    }
+
+    fn increment_current_pi_iteration(&mut self, number_of_hex: u8) {
+        self.current_pi_iteration += number_of_hex as u64;
+    }
+
+    fn next_step(&mut self) {
+        match self.step {
+            Step::X1Left => self.step = Step::X1Right,
+            Step::X1Right => self.step = Step::X2Left,
+            Step::X2Left => self.step = Step::X2Right,
+            Step::X2Right => self.step = Step::X3Left,
+            Step::X3Left => self.step = Step::X3Right,
+            Step::X3Right => self.step = Step::X4Left,
+            Step::X4Left => self.step = Step::X4Right,
+            Step::X4Right => self.step = Step::Final,
+            Step::Final => self.step = Step::X1Left,
+        }
+    }
+
+    fn remove_leading_zeros(&mut self, numbers: Vec<u8>) -> Vec<u8> {
         for i in 0..numbers.len() {
             if numbers[i] != 0 {
                 return numbers[i..].to_vec();

@@ -8,7 +8,7 @@ pub struct HexBlock {
 }
 
 pub const SEED_HEX_BLOCK: &[u8] = b"hex_block";
-pub const MAX_PER_BLOCK: usize = 100;
+pub const MAX_PER_BLOCK: usize = 1000;
 
 impl HexBlock {
     pub fn pda(pi_id: u64, block_id: u64) -> (Pubkey, u8) {
@@ -22,10 +22,21 @@ impl HexBlock {
         )
     }
 
-    pub fn extend_hex(&mut self, new_hex: Vec<TwoHex>) {
+    pub fn extend_hex(&mut self, bytes: &[u8], number_of_hex: u8, current_pi_iteration: u64) {
+        let pi_hex = TwoHex::get_hex_from_bytes(&bytes, number_of_hex);
+        let push_last = number_of_hex % 2 == 0;
+
+        if current_pi_iteration % 2 == 0 {
+            self.extend_hex_even(pi_hex);
+        } else {
+            self.extend_hex_uneven(pi_hex, push_last);
+        }
+    }
+
+    fn extend_hex_even(&mut self, new_hex: Vec<TwoHex>) {
         self.hex.extend(new_hex)
     }
-    pub fn extend_hex_uneven(&mut self, new_hex: Vec<TwoHex>, push_last: bool) {
+    fn extend_hex_uneven(&mut self, new_hex: Vec<TwoHex>, push_last: bool) {
         let first_hex = self.hex.last().unwrap().get_first_hex();
         let second_hex = new_hex[0].get_first_hex().to_second_hex();
         let hex = TwoHex::new(first_hex, second_hex);

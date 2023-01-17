@@ -21,6 +21,13 @@ impl<'info> CalculatePi<'_> {
             (1..11).contains(&number_of_hex),
             CustomError::InvalidNumberOfHexProvided
         );
+
+        require!(
+            ((pi.current_pi_iteration as usize % MAX_PER_BLOCK) + number_of_hex as usize)
+                <= MAX_PER_BLOCK,
+            CustomError::HexBlockOverflow
+        );
+
         pi.pi(hex_block, number_of_hex);
         Ok(())
     }
