@@ -6,7 +6,7 @@ pub struct CalculatePi<'info> {
     pub payer: Signer<'info>,
     #[account(mut,address=Pi::pda(pi.id).0)]
     pub pi: Account<'info, Pi>,
-    #[account(mut,address=HexBlock::pda(pi.id,hex_block.block_id).0)]
+    #[account(mut,address=HexBlock::pda(pi.id,pi.current_hex_block).0)]
     pub hex_block: Account<'info, HexBlock>,
 }
 
@@ -23,12 +23,17 @@ impl<'info> CalculatePi<'_> {
         );
 
         require!(
-            ((pi.current_pi_iteration as usize % MAX_PER_BLOCK) + number_of_hex as usize)
-                <= MAX_PER_BLOCK,
+            ((pi.current_pi_iteration as usize % MAX_HEX_PER_BLOCK) + number_of_hex as usize)
+                <= MAX_HEX_PER_BLOCK,
             CustomError::HexBlockOverflow
         );
 
         require!(pi.minted == false, CustomError::PiAlreadyMinted);
+
+        require!(
+            pi.last_block_initialized == true,
+            CustomError::NextBlockNotInitialized
+        );
 
         pi.pi(hex_block, number_of_hex);
         Ok(())

@@ -39,18 +39,20 @@ fn main() -> ClientResult<()> {
         let pi_account = get_pi_account(&client, pi.0);
         let hex_block_account = get_hex_block_account(&client, hex_block.0);
         println!(
-            "{:?} {}",
-            hex_block_account.hex, pi_account.current_pi_iteration
+            "{:?} {} {}",
+            hex_block_account.hex, pi_account.current_pi_iteration, pi_account.current_hex_block
         );
+
+        if pi_hex - pi_account.current_pi_iteration == 0 {
+            break;
+        }
 
         if pi_account.current_hex_block > hex_block_account.block_id {
             hex_block = pisolana::HexBlock::pda(pi_id, pi_account.current_hex_block);
             initialize_hex_block(&client, pi.0, hex_block.0, hex_block.1)?;
         }
 
-        if pi_hex - pi_account.current_pi_iteration == 0 {
-            break;
-        } else if pi_hex - pi_account.current_pi_iteration < 8 {
+        if pi_hex - pi_account.current_pi_iteration < 10 {
             calculate_pi(
                 &client,
                 pi.0,
@@ -61,8 +63,23 @@ fn main() -> ClientResult<()> {
             calculate_pi(&client, pi.0, hex_block.0, 10)?;
         }
     }
-
+    let pi_account = get_pi_account(&client, pi.0);
+    println!("{}", pi_account.last_block_initialized);
     mint_pi(&client, pi.0, pi_hex)?;
+    let pi_account = get_pi_account(&client, pi.0);
+    println!("{}", pi_account.last_block_initialized);
+
+    loop {
+        let pi_account = get_pi_account(&client, pi.0);
+        hex_block = pisolana::HexBlock::pda(pi_id, pi_account.current_hex_block);
+        println!("{}", pi_account.current_hex_block);
+        if pi_account.current_hex_block == 0 {
+            break;
+        }
+        close_hex_block(&client, pi.0, hex_block.0)?;
+    }
+
+    close_pi(&client, pi.0)?;
 
     Ok(())
 }

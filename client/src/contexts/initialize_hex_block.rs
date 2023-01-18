@@ -10,7 +10,7 @@ pub fn initialize_hex_block(
         program_id: pisolana::ID,
         accounts: vec![
             AccountMeta::new(client.payer_pubkey(), true),
-            AccountMeta::new_readonly(pi, false),
+            AccountMeta::new(pi, false),
             AccountMeta::new(hex_block, false),
             AccountMeta::new_readonly(system_program::ID, false),
         ],

@@ -56,6 +56,10 @@ impl<'info> MintPi<'_> {
         mint_to(cpi_ctx, 1)?;
 
         pi.set_minted();
+        if pi.last_block_initialized == false {
+            pi.decrement_current_hex_block();
+            pi.set_last_block_initialized();
+        }
 
         Ok(())
     }

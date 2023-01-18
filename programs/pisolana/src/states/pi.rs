@@ -20,6 +20,7 @@ pub struct Pi {
     pub current_pi_iteration: u64,
     pub current_hex_block: u64,
     pub minted: bool,
+    pub last_block_initialized: bool,
     pub r: u64,
     pub k: u64,
     pub s: f64,
@@ -143,7 +144,7 @@ impl Pi {
 
                 hex_block.extend_hex(bytes, number_of_hex, self.current_pi_iteration);
                 self.increment_current_pi_iteration(number_of_hex);
-                self.update_current_hex_block(hex_block.hex.len());
+                self.hit_hex_block_limit();
                 self.next_step();
                 self.reset();
             }
@@ -160,15 +161,36 @@ impl Pi {
         }
     }
 
-    fn update_current_hex_block(&mut self, current_hex_block_len: usize) {
-        if current_hex_block_len >= MAX_PER_BLOCK {
-            self.current_hex_block += 1;
+    fn hit_hex_block_limit(&mut self) {
+        if self.current_pi_iteration as usize % MAX_HEX_PER_BLOCK == 0 {
+            self.set_last_block_not_initialized();
+            self.increment_current_hex_block();
         }
     }
 
-    fn increment_current_pi_iteration(&mut self, number_of_hex: u8) {
+    pub fn increment_current_hex_block(&mut self) {
+        self.current_hex_block += 1;
+    }
+
+    pub fn decrement_current_hex_block(&mut self) {
+        if let Some(value) = self.current_hex_block.checked_sub(1) {
+            self.current_hex_block = value;
+        }
+    }
+
+    pub fn increment_current_pi_iteration(&mut self, number_of_hex: u8) {
         self.current_pi_iteration += number_of_hex as u64;
     }
+
+    pub fn set_last_block_not_initialized(&mut self) {
+        self.last_block_initialized = false;
+    }
+
+    pub fn set_last_block_initialized(&mut self) {
+        self.last_block_initialized = true;
+    }
+
+    pub fn last_block_initialized_u64() {}
 
     fn next_step(&mut self) {
         match self.step {
@@ -250,6 +272,7 @@ impl PiAccount for Account<'_, Pi> {
         self.current_pi_iteration = 0;
         self.current_hex_block = 0;
         self.minted = false;
+        self.last_block_initialized = false;
         self.s = 0.0;
         self.k = 0;
         self.r = 0;

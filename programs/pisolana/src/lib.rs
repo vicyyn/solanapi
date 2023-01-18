@@ -31,4 +31,12 @@ pub mod pisolana {
     pub fn mint_pi(ctx: Context<MintPi>, bump: u8) -> Result<()> {
         ctx.accounts.process(bump)
     }
+
+    pub fn close_hex_block(ctx: Context<CloseHexBlock>) -> Result<()> {
+        ctx.accounts.process()
+    }
+
+    pub fn close_pi(ctx: Context<ClosePi>) -> Result<()> {
+        ctx.accounts.process()
+    }
 }
