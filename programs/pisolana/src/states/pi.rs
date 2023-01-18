@@ -149,6 +149,16 @@ impl Pi {
         }
     }
 
+    fn get_multipliers(&self) -> (f64, u64) {
+        match self.step {
+            Step::X1Left | Step::X1Right => return (4.0, 1),
+            Step::X2Left | Step::X2Right => return (-2.0, 4),
+            Step::X3Left | Step::X3Right => return (-1.0, 5),
+            Step::X4Left | Step::X4Right => return (-1.0, 6),
+            Step::Final => return (0.0, 0),
+        }
+    }
+
     fn update_current_hex_block(&mut self, current_hex_block_len: usize) {
         if current_hex_block_len >= MAX_PER_BLOCK {
             self.current_hex_block += 1;
