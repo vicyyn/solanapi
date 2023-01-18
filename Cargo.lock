@@ -687,6 +687,7 @@ name = "client-client"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "anchor-spl",
  "clockwork-client",
  "pisolana",
  "rand 0.8.5",
@@ -2188,6 +2189,7 @@ name = "pisolana"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "anchor-spl",
 ]
 
 [[package]]

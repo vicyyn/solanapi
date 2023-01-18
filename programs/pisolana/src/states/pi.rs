@@ -27,6 +27,7 @@ pub struct Pi {
 }
 
 pub const SEED_PI: &[u8] = b"pi";
+pub const SEED_PI_MINT: &[u8] = b"pi_mint";
 
 impl Pi {
     pub fn pda(id: u64) -> (Pubkey, u8) {

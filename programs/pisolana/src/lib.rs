@@ -28,6 +28,10 @@ pub mod pisolana {
         ctx.accounts.process(number_of_hex)
     }
 
+    pub fn mint_pi(ctx: Context<MintPi>, bump: u8) -> Result<()> {
+        ctx.accounts.process(bump)
+    }
+
     pub fn view_pi(ctx: Context<ViewPi>) -> Result<()> {
         ctx.accounts.process()
     }

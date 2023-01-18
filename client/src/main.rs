@@ -62,5 +62,7 @@ fn main() -> ClientResult<()> {
         }
     }
 
+    mint_pi(&client, pi.0, pi_hex)?;
+
     Ok(())
 }
