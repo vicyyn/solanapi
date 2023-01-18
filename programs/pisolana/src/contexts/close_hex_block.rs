@@ -1,16 +1,16 @@
 use crate::*;
 
 #[derive(Accounts)]
-pub struct CalculatePi<'info> {
+pub struct CloseHexBlock<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(mut,address=Pi::pda(pi.id).0)]
+    #[account(address=Pi::pda(pi.id).0)]
     pub pi: Account<'info, Pi>,
-    #[account(mut,address=HexBlock::pda(pi.id,hex_block.block_id).0)]
+    #[account(mut,address=HexBlock::pda(pi.id,hex_block.block_id).0, close=payer)]
     pub hex_block: Account<'info, HexBlock>,
 }
 
-impl<'info> CalculatePi<'_> {
+impl<'info> CloseHexBlock<'_> {
     pub fn process(&mut self, number_of_hex: u8) -> Result<()> {
         let Self { pi, hex_block, .. } = self;
         require!(

@@ -19,6 +19,7 @@ pub struct Pi {
     pub step: Step,
     pub current_pi_iteration: u64,
     pub current_hex_block: u64,
+    pub minted: bool,
     pub r: u64,
     pub k: u64,
     pub s: f64,
@@ -192,11 +193,15 @@ impl Pi {
         return vec![];
     }
 
-    pub fn reset(&mut self) {
+    fn reset(&mut self) {
         self.s = 0.0;
         self.k = 0;
         self.r = 0;
         self.x = 0.0;
+    }
+
+    pub fn set_minted(&mut self) {
+        self.minted = true;
     }
 
     pub fn pow_mod(&self, n: u64, m: u64, d: u64) -> u64 {
@@ -242,12 +247,13 @@ pub trait PiAccount {
 impl PiAccount for Account<'_, Pi> {
     fn new(&mut self, id: u64, bump: u8) -> Result<()> {
         self.id = id;
+        self.current_pi_iteration = 0;
+        self.current_hex_block = 0;
+        self.minted = false;
         self.s = 0.0;
         self.k = 0;
         self.r = 0;
         self.x = 0.0;
-        self.current_pi_iteration = 0;
-        self.current_hex_block = 0;
         self.bump = bump;
         Ok(())
     }

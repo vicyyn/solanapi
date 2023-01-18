@@ -14,6 +14,7 @@ pub struct InitializeHexBlock<'info> {
 impl<'info> InitializeHexBlock<'_> {
     pub fn process(&mut self, bump: u8) -> Result<()> {
         let Self { hex_block, pi, .. } = self;
+        require!(pi.minted == false, CustomError::PiAlreadyMinted);
         hex_block.new(pi.current_hex_block, bump)?;
         Ok(())
     }

@@ -8,4 +8,6 @@ pub enum CustomError {
     InvalidNumberOfHexProvided,
     #[msg("number_of_hex provided will overflow the Hex Block. Please provide a smaller number")]
     HexBlockOverflow,
+    #[msg("Pi Already Minted. You cannot update a minted Pi.")]
+    PiAlreadyMinted,
 }

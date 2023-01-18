@@ -55,6 +55,8 @@ impl<'info> MintPi<'_> {
         let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
         mint_to(cpi_ctx, 1)?;
 
+        pi.set_minted();
+
         Ok(())
     }
 }
