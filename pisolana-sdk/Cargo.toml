@@ -1,0 +1,18 @@
+[package]
+name = "pisolana-sdk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib","rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2.83"
+pisolana = { path = "../programs/pisolana", features = ["no-entrypoint"], version = "0.1.0" }
+getrandom = { version = "0.2", features = ["js"] }
+solana-sdk = "1.10.29"
+serde-wasm-bindgen = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+
