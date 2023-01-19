@@ -3,6 +3,7 @@ import { Program } from "@project-serum/anchor";
 import { Pisolana } from "../target/types/pisolana";
 import * as wasm from "../pisolana-sdk/pkg";
 import { PublicKey } from "@solana/web3.js";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
 
 describe("program", () => {
   // Configure the client to use the local cluster.
@@ -37,7 +38,7 @@ describe("program", () => {
     console.log("Your transaction signature", tx);
   });
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 30; i++) {
     it("Calculate Pi", async () => {
       const pi_account = await program.account.pi.fetch(pi_pubkey);
       const hex_block_account = await program.account.hexBlock.fetch(
@@ -51,7 +52,7 @@ describe("program", () => {
         pi_account.currentHexBlock
       );
 
-      if (pi_account.currentHexBlock > hex_block_account.currentHexBlock) {
+      if (pi_account.currentHexBlock > hex_block_account.blockId) {
         hex_block_pubkey = new PublicKey(
           wasm.get_hex_block_account(
             BigInt(pi_id),
@@ -73,4 +74,61 @@ describe("program", () => {
       console.log("Your transaction signature", tx);
     });
   }
+
+  it("Mint Pi", async () => {
+    const pi_account = await program.account.pi.fetch(pi_pubkey);
+    const pi_mint = wasm.get_pi_mint(
+      BigInt(pi_account.currentPiIteration.toNumber())
+    );
+
+    const pi_mint_pubkey = new PublicKey(pi_mint[0]);
+    const pi_mint_bump = pi_mint[1];
+
+    const pi_token_account = await getAssociatedTokenAddress(
+      pi_mint_pubkey,
+      program.provider.publicKey
+    );
+
+    const tx = await program.methods
+      .mintPi(pi_mint_bump)
+      .accounts({
+        pi: pi_pubkey,
+        piMint: pi_mint_pubkey,
+        piTokenAccount: pi_token_account,
+      })
+      .rpc();
+
+    console.log("Your transaction signature", tx);
+  });
+
+  it("Close Hex Blocks", async () => {
+    while (true) {
+      const pi_account = await program.account.pi.fetch(pi_pubkey);
+      let hex_block_pubkey = new PublicKey(
+        wasm.get_hex_block_account(
+          BigInt(pi_id),
+          BigInt(pi_account.currentHexBlock.toNumber())
+        )[0]
+      );
+      if (pi_account.currentHexBlock.toNumber() == 0) {
+        break;
+      }
+
+      const tx = await program.methods
+        .closeHexBlock()
+        .accounts({ pi: pi_pubkey, hexBlock: hex_block_pubkey })
+        .rpc();
+
+      console.log("Your transaction signature", tx);
+    }
+  });
+
+  it("Close Pi", async () => {
+    const tx = await program.methods
+      .closePi()
+      .accounts({ pi: pi_pubkey })
+      .rpc();
+
+    console.log("Your transaction signature", tx);
+  });
 });
