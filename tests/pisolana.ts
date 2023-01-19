@@ -16,7 +16,7 @@ describe("program", () => {
   const pi_pubkey = new PublicKey(pi[0]);
   const pi_bump = pi[1];
 
-  const hex_block_pubkey = new PublicKey(hex_block[0]);
+  let hex_block_pubkey = new PublicKey(hex_block[0]);
   const hex_block_bump = hex_block[1];
 
   it("Initialize Pi", async () => {
@@ -36,4 +36,41 @@ describe("program", () => {
 
     console.log("Your transaction signature", tx);
   });
+
+  for (let i = 0; i < 10; i++) {
+    it("Calculate Pi", async () => {
+      const pi_account = await program.account.pi.fetch(pi_pubkey);
+      const hex_block_account = await program.account.hexBlock.fetch(
+        hex_block_pubkey
+      );
+
+      console.log(
+        i,
+        hex_block_account.hex,
+        pi_account.currentPiIteration,
+        pi_account.currentHexBlock
+      );
+
+      if (pi_account.currentHexBlock > hex_block_account.currentHexBlock) {
+        hex_block_pubkey = new PublicKey(
+          wasm.get_hex_block_account(
+            BigInt(pi_id),
+            BigInt(pi_account.currentHexBlock.toNumber())
+          )[0]
+        );
+        const tx = await program.methods
+          .initializeHexBlock(hex_block_bump)
+          .accounts({ pi: pi_pubkey, hexBlock: hex_block_pubkey })
+          .rpc();
+        console.log("Your transaction signature", tx);
+      }
+
+      const tx = await program.methods
+        .calculatePi(10)
+        .accounts({ pi: pi_pubkey, hexBlock: hex_block_pubkey })
+        .rpc();
+
+      console.log("Your transaction signature", tx);
+    });
+  }
 });
