@@ -41,6 +41,7 @@ describe("program", () => {
   for (let i = 0; i < 30; i++) {
     it("Calculate Pi", async () => {
       const pi_account = await program.account.pi.fetch(pi_pubkey);
+      console.log(pi_account);
       const hex_block_account = await program.account.hexBlock.fetch(
         hex_block_pubkey
       );
