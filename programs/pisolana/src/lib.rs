@@ -14,6 +14,8 @@ declare_id!("HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP");
 
 #[program]
 pub mod pisolana {
+    use clockwork_sdk::state::ThreadResponse;
+
     use super::*;
 
     pub fn initialize_pi(ctx: Context<InitializePi>, pi_id: u64, bump: u8) -> Result<()> {
@@ -37,6 +39,14 @@ pub mod pisolana {
     }
 
     pub fn close_pi(ctx: Context<ClosePi>) -> Result<()> {
+        ctx.accounts.process()
+    }
+
+    pub fn initialize_pi_thread(ctx: Context<InitializePiThread>) -> Result<()> {
+        ctx.accounts.process()
+    }
+
+    pub fn calculate_pi_clockwork(ctx: Context<CalculatePiClockwork>) -> Result<ThreadResponse> {
         ctx.accounts.process()
     }
 }

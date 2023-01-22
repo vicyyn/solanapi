@@ -4,12 +4,16 @@ skip-lint = false
 
 [programs.localnet]
 pisolana = "HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP"
+[programs.devnet]
+pisolana = "HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP"
+[programs.mainnet]
+pisolana = "HWXZbmAgYoumCyejC1raxNyLbiV3g7xqfuNfEWmyXCKP"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

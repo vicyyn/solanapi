@@ -8,7 +8,7 @@ pub struct HexBlock {
 }
 
 pub const SEED_HEX_BLOCK: &[u8] = b"hex_block";
-pub const MAX_HEX_PER_BLOCK: usize = 1000;
+pub const MAX_HEX_PER_BLOCK: usize = 8000;
 
 impl HexBlock {
     pub fn pda(pi_id: u64, block_id: u64) -> (Pubkey, u8) {

@@ -1,3 +1,6 @@
+use std::str::FromStr;
+
+use clockwork_sdk::state::Thread;
 use pisolana::SEED_PI_MINT;
 use solana_sdk::pubkey::Pubkey;
 use wasm_bindgen::prelude::*;
@@ -21,4 +24,11 @@ pub fn get_pi_mint(current_pi_iteration: u64) -> JsValue {
         &pisolana::ID,
     );
     return serde_wasm_bindgen::to_value(&(pi_mint.0.to_string(), pi_mint.1)).unwrap();
+}
+
+#[wasm_bindgen]
+pub fn get_thread(authority: String, id: String) -> JsValue {
+    let authority = Pubkey::from_str(&authority).unwrap();
+    let thread_pubkey = Thread::pubkey(authority, id);
+    return serde_wasm_bindgen::to_value(&thread_pubkey.to_string()).unwrap();
 }

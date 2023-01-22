@@ -3,13 +3,9 @@ use crate::*;
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy)]
 pub enum Step {
     X1Left,
-    X1Right,
     X2Left,
-    X2Right,
     X3Left,
-    X3Right,
     X4Left,
-    X4Right,
     Final,
 }
 
@@ -88,12 +84,6 @@ impl Pi {
                     self.next_step();
                 }
             }
-            Step::X1Right => {
-                msg!("X1RIGHT");
-                let sum = self.right_sum(1);
-                self.x += 4.0 * sum;
-                self.next_step();
-            }
             Step::X2Left => {
                 msg!("X2LEFT");
                 let sum = self.left_sum(4);
@@ -101,12 +91,6 @@ impl Pi {
                     self.x -= 2.0 * sum.0;
                     self.next_step();
                 }
-            }
-            Step::X2Right => {
-                msg!("X2RIGHT");
-                let sum = self.right_sum(4);
-                self.x -= 2.0 * sum;
-                self.next_step();
             }
             Step::X3Left => {
                 msg!("X3LEFT");
@@ -116,12 +100,6 @@ impl Pi {
                     self.next_step();
                 }
             }
-            Step::X3Right => {
-                msg!("X3RIGHT");
-                let sum = self.right_sum(5);
-                self.x -= sum;
-                self.next_step();
-            }
             Step::X4Left => {
                 msg!("X4LEFT");
                 let sum = self.left_sum(6);
@@ -130,14 +108,12 @@ impl Pi {
                     self.next_step();
                 }
             }
-            Step::X4Right => {
-                msg!("X4RIGHT");
-                let sum = self.right_sum(6);
-                self.x -= sum;
-                self.next_step();
-            }
             Step::Final => {
                 msg!("FINAL");
+                self.x += 4.0 * self.right_sum(1);
+                self.x -= 2.0 * self.right_sum(4);
+                self.x -= self.right_sum(5);
+                self.x -= self.right_sum(6);
                 let x = self.x.rem_euclid(1.0);
                 let bytes = &self
                     .remove_leading_zeros(((x * 16_f64.powi(14)) as u128).to_be_bytes().to_vec());
@@ -151,15 +127,15 @@ impl Pi {
         }
     }
 
-    fn get_multipliers(&self) -> (f64, u64) {
-        match self.step {
-            Step::X1Left | Step::X1Right => return (4.0, 1),
-            Step::X2Left | Step::X2Right => return (-2.0, 4),
-            Step::X3Left | Step::X3Right => return (-1.0, 5),
-            Step::X4Left | Step::X4Right => return (-1.0, 6),
-            Step::Final => return (0.0, 0),
-        }
-    }
+    // fn get_multipliers(&self) -> (f64, u64) {
+    //     match self.step {
+    //         Step::X1Left | Step::X1Right => return (4.0, 1),
+    //         Step::X2Left | Step::X2Right => return (-2.0, 4),
+    //         Step::X3Left | Step::X3Right => return (-1.0, 5),
+    //         Step::X4Left | Step::X4Right => return (-1.0, 6),
+    //         Step::Final => return (0.0, 0),
+    //     }
+    // }
 
     fn hit_hex_block_limit(&mut self) {
         if self.current_pi_iteration as usize % MAX_HEX_PER_BLOCK == 0 {
@@ -194,14 +170,10 @@ impl Pi {
 
     fn next_step(&mut self) {
         match self.step {
-            Step::X1Left => self.step = Step::X1Right,
-            Step::X1Right => self.step = Step::X2Left,
-            Step::X2Left => self.step = Step::X2Right,
-            Step::X2Right => self.step = Step::X3Left,
-            Step::X3Left => self.step = Step::X3Right,
-            Step::X3Right => self.step = Step::X4Left,
-            Step::X4Left => self.step = Step::X4Right,
-            Step::X4Right => self.step = Step::Final,
+            Step::X1Left => self.step = Step::X2Left,
+            Step::X2Left => self.step = Step::X3Left,
+            Step::X3Left => self.step = Step::X4Left,
+            Step::X4Left => self.step = Step::Final,
             Step::Final => self.step = Step::X1Left,
         }
     }

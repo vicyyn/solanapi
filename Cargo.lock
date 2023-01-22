@@ -737,6 +737,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "clockwork-sdk"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5cb27a6546c10877fb0b309bb94f23fd13903d73ba793dda8b4acab4b70fc286"
+dependencies = [
+ "anchor-lang",
+ "chrono",
+ "clockwork-thread-program",
+ "nom",
+ "once_cell",
+]
+
+[[package]]
 name = "clockwork-thread-program"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2192,12 +2205,14 @@ version = "0.1.0"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
+ "clockwork-sdk",
 ]
 
 [[package]]
 name = "pisolana-sdk"
 version = "0.1.0"
 dependencies = [
+ "clockwork-sdk",
  "getrandom 0.2.8",
  "pisolana",
  "serde",

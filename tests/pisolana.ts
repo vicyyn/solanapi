@@ -2,7 +2,12 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Pisolana } from "../target/types/pisolana";
 import * as wasm from "../pisolana-sdk/pkg";
-import { PublicKey } from "@solana/web3.js";
+import {
+  ComputeBudgetProgram,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  Transaction,
+} from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
 describe("program", () => {
@@ -19,6 +24,11 @@ describe("program", () => {
 
   let hex_block_pubkey = new PublicKey(hex_block[0]);
   const hex_block_bump = hex_block[1];
+
+  const piThread = PublicKey.findProgramAddressSync(
+    [Buffer.from("thread"), pi_pubkey.toBuffer(), Buffer.from("pi_thread")],
+    new PublicKey("3XXuUFfweXBwFgFfYaejLvZE4cGZiHgKiGfMtdxNzYmv")
+  );
 
   it("Initialize Pi", async () => {
     const tx = await program.methods
@@ -37,6 +47,32 @@ describe("program", () => {
 
     console.log("Your transaction signature", tx);
   });
+
+  // it("Initialize Pi Thread", async () => {
+  //   const tx = await program.methods
+  //     .initializePiThread()
+  //     .accounts({
+  //       pi: pi_pubkey,
+  //       hexBlock: hex_block_pubkey,
+  //       clockworkThread: piThread[0],
+  //       threadProgram: new PublicKey(
+  //         "3XXuUFfweXBwFgFfYaejLvZE4cGZiHgKiGfMtdxNzYmv"
+  //       ),
+  //     })
+  //     .rpc();
+
+  //   console.log("Your transaction signature", tx);
+  //   console.log(piThread[0].toBase58());
+  // });
+
+  // it("Airdrop to Thread", async () => {
+  //   const tx = await program.provider.connection.requestAirdrop(
+  //     piThread[0],
+  //     1 * LAMPORTS_PER_SOL
+  //   );
+
+  //   console.log("Your transaction signature", tx);
+  // });
 
   for (let i = 0; i < 30; i++) {
     it("Calculate Pi", async () => {
@@ -66,11 +102,27 @@ describe("program", () => {
           .rpc();
         console.log("Your transaction signature", tx);
       }
+      const transaction = new Transaction();
 
-      const tx = await program.methods
-        .calculatePi(10)
-        .accounts({ pi: pi_pubkey, hexBlock: hex_block_pubkey })
-        .rpc();
+      const additionalComputeBudgetInstruction =
+        ComputeBudgetProgram.requestUnits({
+          units: 1400000, // max of 1.4m
+          additionalFee: 0,
+        });
+
+      transaction.add(additionalComputeBudgetInstruction);
+
+      const calculatePi = program.instruction.calculatePi(10, {
+        accounts: {
+          payer: program.provider.publicKey,
+          pi: pi_pubkey,
+          hexBlock: hex_block_pubkey,
+        },
+      });
+
+      transaction.add(calculatePi);
+
+      const tx = await program.provider.send(transaction);
 
       console.log("Your transaction signature", tx);
     });
