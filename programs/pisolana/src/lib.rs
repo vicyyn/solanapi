@@ -42,11 +42,17 @@ pub mod pisolana {
         ctx.accounts.process()
     }
 
-    pub fn initialize_pi_thread(ctx: Context<InitializePiThread>) -> Result<()> {
+    pub fn clockwork_initialize_thread(ctx: Context<ClockworkInitializeThread>) -> Result<()> {
         ctx.accounts.process()
     }
 
-    pub fn calculate_pi_clockwork(ctx: Context<CalculatePiClockwork>) -> Result<ThreadResponse> {
+    pub fn clockwork_calculate_pi(ctx: Context<ClockworkCalculatePi>) -> Result<ThreadResponse> {
+        ctx.accounts.process()
+    }
+
+    pub fn clockwork_initialize_hex_block(
+        ctx: Context<ClockworkInitializeHexBlock>,
+    ) -> Result<ThreadResponse> {
         ctx.accounts.process()
     }
 }

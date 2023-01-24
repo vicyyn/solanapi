@@ -2,13 +2,12 @@ use crate::*;
 use anchor_lang::solana_program::instruction::Instruction;
 
 use clockwork_sdk::{
-    self,
     state::{Thread, Trigger},
     ThreadProgram,
 };
 
 #[derive(Accounts)]
-pub struct InitializePiThread<'info> {
+pub struct ClockworkInitializeThread<'info> {
     pub payer: Signer<'info>,
     #[account(mut,address=Pi::pda(pi.id).0)]
     pub pi: Account<'info, Pi>,
@@ -21,7 +20,7 @@ pub struct InitializePiThread<'info> {
     pub system_program: Program<'info, System>,
 }
 
-impl<'info> InitializePiThread<'_> {
+impl<'info> ClockworkInitializeThread<'_> {
     pub fn process(&mut self) -> Result<()> {
         let Self {
             payer,
@@ -40,7 +39,7 @@ impl<'info> InitializePiThread<'_> {
                 AccountMeta::new(hex_block.key(), false),
                 AccountMeta::new(clockwork_thread.key(), true),
             ],
-            data: clockwork_sdk::utils::anchor_sighash("calculate_pi_clockwork").into(),
+            data: clockwork_sdk::utils::anchor_sighash("clockwork_calculate_pi").into(),
         };
 
         clockwork_sdk::cpi::thread_create(
