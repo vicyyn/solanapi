@@ -3,11 +3,13 @@ use clockwork_sdk::state::{AccountMetaData, InstructionData, Thread, ThreadRespo
 
 #[derive(Accounts)]
 pub struct ClockworkInitializeHexBlock<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
     #[account(mut,signer,address = Thread::pubkey(pi.key(),"pi_thread".to_string()))]
     pub clockwork_thread: Box<Account<'info, Thread>>,
     #[account(mut,address=Pi::pda(pi.id).0)]
     pub pi: Account<'info, Pi>,
-    #[account(init,payer=clockwork_thread, space = 8 + 8 + 1 + 4 + (MAX_HEX_PER_BLOCK / 2), seeds=[SEED_HEX_BLOCK,&pi.id.to_be_bytes(), &pi.current_hex_block.to_be_bytes()], bump)]
+    #[account(init,payer=payer, space = 8 + 8 + 1 + 4 + (MAX_HEX_PER_BLOCK / 2), seeds=[SEED_HEX_BLOCK,&pi.id.to_be_bytes(), &pi.current_hex_block.to_be_bytes()], bump)]
     pub hex_block: Account<'info, HexBlock>,
     pub system_program: Program<'info, System>,
 }

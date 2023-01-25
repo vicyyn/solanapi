@@ -1,6 +1,9 @@
 use crate::*;
 use anchor_lang::solana_program::system_program;
-use clockwork_sdk::state::{AccountMetaData, InstructionData, Thread, ThreadResponse};
+use clockwork_sdk::{
+    state::{AccountMetaData, InstructionData, Thread, ThreadResponse},
+    utils::PAYER_PUBKEY,
+};
 
 #[derive(Accounts)]
 pub struct ClockworkCalculatePi<'info> {
@@ -35,6 +38,7 @@ impl<'info> ClockworkCalculatePi<'_> {
                 next_instruction: Some(InstructionData {
                     program_id: crate::ID,
                     accounts: vec![
+                        AccountMetaData::new(PAYER_PUBKEY, true),
                         AccountMetaData::new(clockwork_thread.key(), true),
                         AccountMetaData::new(pi.key(), false),
                         AccountMetaData::new(new_hex_block.0, false),
