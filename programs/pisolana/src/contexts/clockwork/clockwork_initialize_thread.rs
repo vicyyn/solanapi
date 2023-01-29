@@ -55,10 +55,7 @@ impl<'info> ClockworkInitializeThread<'_> {
             ),
             "pi_thread".to_string(),
             calculate_pi_clockwork_ix.into(),
-            Trigger::Cron {
-                schedule: "*/5 * * * * * *".to_string(),
-                skippable: false,
-            },
+            Trigger::Immediate {},
         )?;
 
         Ok(())
