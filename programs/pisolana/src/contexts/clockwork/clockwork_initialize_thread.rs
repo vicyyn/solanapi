@@ -2,7 +2,7 @@ use crate::*;
 use anchor_lang::solana_program::instruction::Instruction;
 
 use clockwork_sdk::{
-    state::{Thread, Trigger},
+    state::{Thread, ThreadSettings, Trigger},
     ThreadProgram,
 };
 
@@ -56,6 +56,24 @@ impl<'info> ClockworkInitializeThread<'_> {
             "pi_thread".to_string(),
             calculate_pi_clockwork_ix.into(),
             Trigger::Immediate {},
+        )?;
+
+        clockwork_sdk::cpi::thread_update(
+            CpiContext::new_with_signer(
+                thread_program.to_account_info(),
+                clockwork_sdk::cpi::ThreadUpdate {
+                    authority: pi.to_account_info(),
+                    system_program: system_program.to_account_info(),
+                    thread: clockwork_thread.to_account_info(),
+                },
+                &[&[SEED_PI, &pi.id.to_be_bytes(), &[pi.bump]]],
+            ),
+            ThreadSettings {
+                rate_limit: Some(32),
+                trigger: Some(Trigger::Immediate {}),
+                kickoff_instruction: None,
+                fee: None,
+            },
         )?;
 
         Ok(())
